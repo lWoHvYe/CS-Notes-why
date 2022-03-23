@@ -41,7 +41,7 @@
 
 - 编译期常量（public static final）在编译时会被替换掉。
 
-- 多线程原子操作AtomicXXX原子类、XXXAdder加法器、XXXAccumulator累加器。
+- 多线程原子操作AtomicXXX原子类、XXXAdder加法器、XXXAccumulator累加器。XXXAdder，通过尝试使用分段CAS以及自动分段迁移的方式来大幅度提升多线程高并发执行CAS操作的性能！
 
 ### IO
 
