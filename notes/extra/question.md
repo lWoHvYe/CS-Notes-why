@@ -21,6 +21,7 @@
 - [系统性能分析入门](https://mp.weixin.qq.com/s/beqzPadduGPSn6hw7oF4EQ)
 - 系统设计：设计一个短链接生成系统
 - [十大经典系统设计题](https://xie.infoq.cn/article/4c0c9328a725a76922f6547ad)
+- 接口权限、数据权限模型如何设计，具体功能如何实现
 
 。。。。。
 
