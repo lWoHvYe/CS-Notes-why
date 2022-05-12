@@ -23,6 +23,9 @@
 - [十大经典系统设计题](https://xie.infoq.cn/article/4c0c9328a725a76922f6547ad)
 - 接口权限、数据权限模型如何设计，具体功能如何实现
 - [反向面试](https://github.com/yifeikong/reverse-interview-zh)
+- DDD了解吗
+- DevOps、CI/CD、Agile有啥吗联系及区别
+- 单元测试
 
 。。。。。
 
