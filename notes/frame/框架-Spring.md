@@ -22,7 +22,8 @@
 
   Spring 中的 IoC 的实现原理就是工厂模式加反射机制。
 
-- Spring如何解决循环依赖问题，[详见](https://www.lwohvye.com/2021/11/29/spring%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96%ef%bc%88%e8%bd%ac%ef%bc%89/)
+- Spring如何解决循环依赖问题（singletonObjects、singletonFactories、earlySingletonObjects），
+  [详见](https://www.lwohvye.com/2021/11/29/spring%e5%be%aa%e7%8e%af%e4%be%9d%e8%b5%96%ef%bc%88%e8%bd%ac%ef%bc%89/)
 
   AB循环依赖问题只要A的注入方式是setter且singleton ，就不会有循环依赖问题。不要用构造注入，因为其未用三级缓存，所以无法解决循环依赖问题。
 
@@ -107,7 +108,7 @@
 
   ```java
       // 启动类中的run调用的这个
-  		public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
+          public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
           return run(new Class[]{primarySource}, args); // 调用了下面的
       }
   
@@ -152,11 +153,11 @@
   ```
 
     - 执行SpringApplication构造方法
-    - 存储主启动类
+    - 存储主启动类(指的一般是我们main方法那个类，看设计是可以传多个的是一个数组)
     - 设置应用属性deduceFromClasspath()
     - 设置ApplicationContextInitializer setInitializers()
     - 设置监听器setListeners()
-    - 决定主启动类deduceMainApplicationClass()
+    - 决定主启动类deduceMainApplicationClass() (最后拿到的是main方法的那个类，这个决定应该便是这个意思)
 
 - 执行run()方法
 
@@ -227,8 +228,10 @@
 
 - Spring Boot自动装配的过程。
 
-  Spring
-  Boot启动的时候会通过@EnableAutoConfiguration注解找到META-INF/spring.factories配置文件中的所有自动配置类，并对其进行加载，而这些自动配置类都是以AutoConfiguration结尾来命名的，它实际上就是一个JavaConfig形式的Spring容器配置类，它能通过以Properties结尾命名的类中取得在全局配置文件中配置的属性，而XxxxProperties类是通过@ConfigurationProperties注解与全局配置文件中对应的属性进行绑定的。
+  Spring Boot启动的时候会通过@EnableAutoConfiguration注解找到META-INF/spring.factories
+  ([这个在2.7改了配置方式](https://github.com/lWoHvYe/eladmin/blob/main/document/springboot/SpringBoot-2.7.0.md)) 配置文件中的所有自动配置类，并对其进行加载，
+  而这些自动配置类都是以AutoConfiguration结尾来命名的，它实际上就是一个JavaConfig形式的Spring容器配置类，它能通过以Properties结尾命名的类中取得在全局配置文件中配置的属性，
+  而XxxxProperties类是通过@ConfigurationProperties注解与全局配置文件中对应的属性进行绑定的。
 
 - 注入属性的方式：@Value、@ConfigurationProperties(prefix = "")
 
