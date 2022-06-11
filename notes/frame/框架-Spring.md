@@ -108,7 +108,7 @@
 
   ```java
       // 启动类中的run调用的这个
-          public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
+      public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
           return run(new Class[]{primarySource}, args); // 调用了下面的
       }
   
@@ -263,3 +263,12 @@
 - [Spring Security](https://www.lwohvye.com/2021/11/14/spring-security/)
 
 - Zuul 和 Gateway 的区别
+    - Zuul: 是netflix公司的项目，本质上是web servlet，基于JavaEE Servlet技术栈，使用阻塞API，处理的是http请求，没有提供异步支持，不支持任何长连接。
+    - spring-cloud-gateway: Spring Boot和Spring Webflux提供的Netty底层环境，不能和传统的Servlet容器一起使用，也不能打包成一个WAR包，使用非阻塞API，支持websocket。
+    - 内部实现： gateway对比zuul多依赖了spring-webflux，在spring的支持下，功能更强大，内部实现了限流、负载均衡等，扩展性也更强，但同时也限制了仅适合于Spring Cloud套件；
+      zuul则可以扩展至其他微服务框架中，其内部没有实现限流、负载均衡等。
+    - 是否支持异步：zuul仅支持同步；gateway支持异步。理论上gateway则更适合于提高系统吞吐量（但不一定能有更好的性能），最终性能还需要通过严密的压测来决定
+    - 框架设计的角度： gateway具有更好的扩展性，稳定性也是非常好的
+    - 性能： WebFlux 模块的名称是 spring-webflux，名称中的 Flux 来源于 Reactor 中的类 Flux。Spring webflux 有一个全新的非堵塞的函数式 Reactive Web 框架，可以用来构建异步的、非堵塞的、事件驱动的服务，在伸缩性方面表现非常好。
+      使用非阻塞API。 Websockets得到支持，并且由于它与Spring紧密集成，所以将会是一个更好的开发体验。
+      Zuul 1.x，是一个基于阻塞io的API Gateway。Zuul已经发布了Zuul 2.x，基于Netty，也是非阻塞的，支持长连接，但Spring Cloud暂时还没有整合计划。

@@ -26,10 +26,10 @@
 - DDD了解吗
 - DevOps、CI/CD、Agile有啥吗联系及区别
     - 区分敏捷，DevOps 和 CI/CD 最快速简便的方法：
-    - 敏捷专注于在加速交付的同时突出变化的过程。
-    - CI/CD 专注于软件生命周期内强调自动化的工具。持续集成（CI）、持续交付（CD）
-    - DevOps 专注于强调响应能力的文化角色。
-      ![https://www.synopsys.com/blogs/software-security/agile-cicd-devops-difference/](img/DevOps_CI-CD.png)
+        - 敏捷专注于在加速交付的同时突出变化的过程。
+        - CI/CD 专注于软件生命周期内强调自动化的工具。持续集成（CI）、持续交付（CD）
+        - DevOps 专注于强调响应能力的文化角色。
+          ![https://www.synopsys.com/blogs/software-security/agile-cicd-devops-difference/](img/DevOps_CI-CD.png)
 - 单元测试、代码覆盖率
 - 各类源码需要看一看
 
