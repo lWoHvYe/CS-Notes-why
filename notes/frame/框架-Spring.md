@@ -1,6 +1,6 @@
 ## 框架-Spring
 
-- Spring特点：轻量级、控制反转IOC（依赖注入DI）、面向切面编程AOP、容器、框架集合
+- Spring特点：轻量级、控制反转IoC（依赖注入DI）、面向切面编程AOP、容器、框架集合
 
 - Spring常用模块：core、beans、context、aop、mvc、tx、web、jdbc、orm
 
@@ -272,3 +272,14 @@
     - 性能： WebFlux 模块的名称是 spring-webflux，名称中的 Flux 来源于 Reactor 中的类 Flux。Spring webflux 有一个全新的非堵塞的函数式 Reactive Web 框架，可以用来构建异步的、非堵塞的、事件驱动的服务，在伸缩性方面表现非常好。
       使用非阻塞API。 Websockets得到支持，并且由于它与Spring紧密集成，所以将会是一个更好的开发体验。
       Zuul 1.x，是一个基于阻塞io的API Gateway。Zuul已经发布了Zuul 2.x，基于Netty，也是非阻塞的，支持长连接，但Spring Cloud暂时还没有整合计划。
+
+- OAuth 2.0
+    - 这个本身与Spring 没啥关系，OAuth 即 Open standard for Authorization。OAuth是一个网络开放协议。为保证用户资源的安全授权提供了简易的标准
+    - oauth2.0提供了四种授权模式，开发者可以根据自己的业务情况自由选择。
+        - 授权码授权模式（Authorization Code Grant）
+        - 隐式授权模式（Implicit Grant）
+        - 密码授权模式（Resource Owner Password Credentials Grant）
+        - 客户端凭证授权模式（Client Credentials Grant）
+        - [RFC 6749](https://tools.ietf.org/html/rfc6749)
+        - 
+
