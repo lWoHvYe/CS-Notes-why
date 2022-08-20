@@ -6,7 +6,7 @@
 
 - 数组、链表、二叉树（二叉搜索树、红黑树）、堆、栈、图
 
-- 先通过HashCode判断，相同再用equals判断
+- 先通过HashCode判断，相同再用equals判断，为何重写equals要重写HashCode方法
 
 - ArrayList扩容为1.5倍。int newCapacity = oldCapacity + (oldCapacity >> 1)
 
@@ -37,7 +37,9 @@
 
       结构：Node 数组 + 链表 / 红黑树
 
-- LinkedHashMap，底层为HashMap + 双向链表，其中有一个属性accessOrder，默认false表示按照插入的顺序访问；当设置为true时，当元素被访问时，会被移动到链表的末位。当添加元素时，会调用removeEldestEntry()判断是否要删除头部的元素（默认是不删除的）
+- LinkedHashMap，底层为HashMap +
+  双向链表，其中有一个属性accessOrder，默认false表示按照插入的顺序访问；当设置为true时，当元素被访问时，会被移动到链表的末位。当添加元素时，会调用removeEldestEntry()
+  判断是否要删除头部的元素（默认是不删除的）
 
   可以用LinkedHashMap来做LRU（最近最少使用），在构造中accessOrder传true，并重写removeEldestEntry()方法即可。
 

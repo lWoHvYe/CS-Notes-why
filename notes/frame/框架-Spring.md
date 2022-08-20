@@ -4,11 +4,13 @@
 
 - Spring常用模块：core、beans、context、aop、mvc、tx、web、jdbc、orm
 
-- IoC（Inverse of Control:控制反转） 是一种设计思想，而不是一个具体的技术实现。IoC 的思想就是将原本在程序中手动创建对象的控制权，交由 Spring 框架来管理。不过， IoC 并非 Spirng 特有，在其他语言中也有应用。
+- IoC（Inverse of Control:控制反转） 是一种设计思想，而不是一个具体的技术实现。IoC 的思想就是将原本在程序中手动创建对象的控制权，交由 Spring 框架来管理。不过， IoC 并非
+  Spirng 特有，在其他语言中也有应用。
     - 控制 ：指的是对象创建（实例化、管理）的权力
     - 反转 ：控制权交给外部环境（Spring 框架、IoC 容器）
 
-  将对象之间的相互依赖关系交给 IoC 容器来管理，并由 IoC 容器完成对象的注入。这样可以很大程度上简化应用的开发，把应用从复杂的依赖关系中解放出来。 IoC 容器就像是一个工厂一样，当我们需要创建一个对象的时候，只需要配置好配置文件/注解即可，完全不用考虑对象是如何被创建出来的。
+  将对象之间的相互依赖关系交给 IoC 容器来管理，并由 IoC 容器完成对象的注入。这样可以很大程度上简化应用的开发，把应用从复杂的依赖关系中解放出来。 IoC
+  容器就像是一个工厂一样，当我们需要创建一个对象的时候，只需要配置好配置文件/注解即可，完全不用考虑对象是如何被创建出来的。
 
   在 Spring 中， IoC 容器是 Spring 用来实现 IoC 的载体， IoC 容器实际上就是个 Map，Map 中存放的是各种对象。
 
@@ -18,7 +20,8 @@
 
     - BeanFactory - BeanFactory 就像一个包含 bean 集合的工厂类。它会在客户端要求时实例化 bean。
     - ApplicationContext - ApplicationContext 接口扩展了 BeanFactory 接口。它在 BeanFactory 基础上提供了一些额外的功能。
-    - BeanFactory 是 Spring 框架的基础设施，面向 Spring 本身;ApplicationContext 面向使用 Spring 框架的开发者，几乎所有的应用场合我们都直接使用 ApplicationContext 而非底层 的 BeanFactory。
+    - BeanFactory 是 Spring 框架的基础设施，面向 Spring 本身;ApplicationContext 面向使用 Spring 框架的开发者，几乎所有的应用场合我们都直接使用 ApplicationContext
+      而非底层 的 BeanFactory。
 
   Spring 中的 IoC 的实现原理就是工厂模式加反射机制。
 
@@ -27,7 +30,8 @@
 
   AB循环依赖问题只要A的注入方式是setter且singleton ，就不会有循环依赖问题。不要用构造注入，因为其未用三级缓存，所以无法解决循环依赖问题。
 
-  Spring推荐构造器注入的原因在于final保证了注入的组件不可变，并且确保需要的依赖不为空，然后构造器还可以内置npe check logic。引入新的问题是循环依赖无法自动解决了，setter注入是可以解决循环依赖问题的，构造器注入存在循环依赖的时候会中断启动。
+  Spring推荐构造器注入的原因在于final保证了注入的组件不可变，并且确保需要的依赖不为空，然后构造器还可以内置npe check
+  logic。引入新的问题是循环依赖无法自动解决了，setter注入是可以解决循环依赖问题的，构造器注入存在循环依赖的时候会中断启动。
 
 - ConfigurableApplicationContext 扩展于 ApplicationContext，它新增加了两个主要 的方法: refresh()和 close()，让 ApplicationContext 具有启动、刷新和关闭应用上下 文的能力
 
@@ -57,7 +61,8 @@
 
   AOP 是 OOP（面向对象编程）的一种延续。
 
-  Spring AOP 就是基于动态代理的，如果要代理的对象，实现了某个接口，那么 Spring AOP 会使用 **JDK Proxy**，去创建代理对象，而对于没有实现接口的对象，就无法使用 JDK Proxy 去进行代理了，这时候 Spring AOP 会使用 **Cglib**
+  Spring AOP 就是基于动态代理的，如果要代理的对象，实现了某个接口，那么 Spring AOP 会使用 **JDK Proxy**，去创建代理对象，而对于没有实现接口的对象，就无法使用 JDK
+  Proxy 去进行代理了，这时候 Spring AOP 会使用 **Cglib**
   生成一个被代理对象的子类来作为代理。
 
   AOP 主要用来解决：在不改变原有业务逻辑的情况下，增强横切逻辑代码，根本上解耦合，避免横切逻辑代码重复。
@@ -70,7 +75,7 @@
 
 - ASM
 
-- Spring容器默认未打开注解装配，需配置` <context:annotation-config/>`
+- Spring容器默认未打开注解装配，需配置 \<context:annotation-config/>，当然Spring Boot已经把这事做了
 
 - @Autowired类型驱动注入（byType）。当多个bean的type相同时，通过@Qualifier来指定要注入的bean
 
@@ -87,7 +92,8 @@
     - `DispaterServlet` 把返回的 `Model` 传给查出的 `View`（视图渲染）。
     - 把 `View` 返回给请求者（浏览器）
 
-- WebApplicationContext 是 ApplicationContext 的扩展。它具有 Web 应用程序所需的一些额外功能。它与普通的 ApplicationContext 在解析主题和决定与哪个 servlet 关联的能力方面有所不同。
+- WebApplicationContext 是 ApplicationContext 的扩展。它具有 Web 应用程序所需的一些额外功能。它与普通的 ApplicationContext 在解析主题和决定与哪个 servlet
+  关联的能力方面有所不同。
 
 - Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
 
@@ -98,7 +104,8 @@
 
 - Spring JavaConfig 是 Spring 社区的产品，它提供了配置 Spring IoC 容器的纯 Java 方法。因此它有助于避免使用 XML 配置。
 
-- @SpringBootApplication注解：可以把 `@SpringBootApplication`看作是 `@Configuration`、`@EnableAutoConfiguration`、`@ComponentScan` 注解的集合。根据 SpringBoot 官网，这三个注解的作用分别是：
+- @SpringBootApplication注解：可以把 `@SpringBootApplication`看作是 `@Configuration`、`@EnableAutoConfiguration`、`@ComponentScan` 注解的集合。根据 SpringBoot
+  官网，这三个注解的作用分别是：
 
     - `@EnableAutoConfiguration`：启用 SpringBoot 的自动配置机制
     - `@ComponentScan`： 扫描被`@Component` (`@Service`,`@Controller`)注解的 bean，注解默认会扫描该类所在的包下所有的类。
@@ -269,7 +276,8 @@
       zuul则可以扩展至其他微服务框架中，其内部没有实现限流、负载均衡等。
     - 是否支持异步：zuul仅支持同步；gateway支持异步。理论上gateway则更适合于提高系统吞吐量（但不一定能有更好的性能），最终性能还需要通过严密的压测来决定
     - 框架设计的角度： gateway具有更好的扩展性，稳定性也是非常好的
-    - 性能： WebFlux 模块的名称是 spring-webflux，名称中的 Flux 来源于 Reactor 中的类 Flux。Spring webflux 有一个全新的非堵塞的函数式 Reactive Web 框架，可以用来构建异步的、非堵塞的、事件驱动的服务，在伸缩性方面表现非常好。
+    - 性能： WebFlux 模块的名称是 spring-webflux，名称中的 Flux 来源于 Reactor 中的类 Flux。Spring webflux 有一个全新的非堵塞的函数式 Reactive Web
+      框架，可以用来构建异步的、非堵塞的、事件驱动的服务，在伸缩性方面表现非常好。
       使用非阻塞API。 Websockets得到支持，并且由于它与Spring紧密集成，所以将会是一个更好的开发体验。
       Zuul 1.x，是一个基于阻塞io的API Gateway。Zuul已经发布了Zuul 2.x，基于Netty，也是非阻塞的，支持长连接，但Spring Cloud暂时还没有整合计划。
 
