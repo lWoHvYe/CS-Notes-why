@@ -290,6 +290,4 @@
         - 客户端凭证授权模式（Client Credentials Grant）
         - [RFC 6749](https://tools.ietf.org/html/rfc6749)
         - 
-- TODO
-    - Spring WebFlux
-    - Reactor 
+    - OpenID Connect(OIDC): It's a standard for authentication, It introduces a new token type called `id_token`, For id_tokens OIDC uses JSON web tokens (JWT)
