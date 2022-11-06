@@ -46,7 +46,7 @@
     - 检查是否是InitializingBean以决定是否调用afterPropertiesSet方法
     - 检查是否配置有自定义的init-method
     - BeanPostProcessor后置处理
-    - 注册必要的Destruction相关回调接口
+    - 注册必要的Destruction相关回调接口（以在destroy时回调）
     - 使用中
     - 是否实现DesposableBean接口以决定是否调用destory方法
     - 是否配置有自定义的destory方法
@@ -242,9 +242,10 @@
 
 - 注入属性的方式：@Value、@ConfigurationProperties(prefix = "")
 
-- Spring加载配置文件的优先级：项目根目录下config中的 > resources/config中的 > resources中的
+- Spring加载配置文件的优先级：项目根目录下config中的 > resources/config中的 > resources中的。
+  还可以[使用@PropertySource来指定加载自定义的configFile](https://www.lwohvye.com/2022/10/26/springboot%e8%af%bb%e5%8f%96%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6/)
 
-- 自定义starter：写一个AutoConfiguration，在resources/META-INF/spring.factories文件中添加：
+- 自定义starter：写一个AutoConfiguration，在resources/META-INF/spring.factories文件中添加(2.7开始推荐其他的方式，见上文)：
 
   ```
   org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
@@ -289,5 +290,5 @@
         - 密码授权模式（Resource Owner Password Credentials Grant）
         - 客户端凭证授权模式（Client Credentials Grant）
         - [RFC 6749](https://tools.ietf.org/html/rfc6749)
-        - 
+        -
     - OpenID Connect(OIDC): It's a standard for authentication, It introduces a new token type called `id_token`, For id_tokens OIDC uses JSON web tokens (JWT)
