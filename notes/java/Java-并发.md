@@ -26,6 +26,20 @@
 
   当前线程调用condition.await()方法后，会使得当前线程释放lock然后加入到等待队列（不带头节点的链式队列）中，直至被condition.signal()/signalAll()
   后会使得当前线程从等待队列中移至到同步队列（带头节点的链式队列）中去，直到获得了lock后才会从await方法返回，或者在等待时被中断会做中断处理。也即被唤醒后要先重新获取锁。
+  ```
+  java.util.concurrent.locks.Condition#await():
+  Causes the current thread to wait until it is signalled or interrupted.
+  The lock associated with this Condition is atomically released and the current thread becomes disabled for thread scheduling purposes and lies dormant until one of four things happens:
+   - Some other thread invokes the signal method for this Condition and the current thread happens to be chosen as the thread to be awakened; or
+   - Some other thread invokes the signalAll method for this Condition; or
+   - Some other thread interrupts the current thread, and interruption of thread suspension is supported; or
+   - A "spurious wakeup" occurs.
+  In all cases, before this method can return the current thread must re-acquire the lock associated with this condition. When the thread returns it is guaranteed to hold this lock.
+  
+  java.util.concurrent.locks.Condition#signal():
+  Wakes up one waiting thread.
+  If any threads are waiting on this condition then one is selected for waking up. That thread must then re-acquire the lock before returning from await.
+  ```
 
 - 锁：乐观锁（通过CAS操作实现）、悲观锁、自旋锁、Synchronized同步锁、ReentrantLock、ReadWriteLock读写锁、Semaphore信号量、CountDownLatch倒计时器、CyclicBarrier循环栅栏。
   可重入锁、公平锁、非公平锁、共享锁、独占锁、重量级锁、轻量级锁、偏向锁（已过时）、Atomic原子类

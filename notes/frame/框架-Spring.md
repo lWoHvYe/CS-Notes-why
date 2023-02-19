@@ -56,6 +56,9 @@
 - Spring依赖注入四种方式：构造器注入、setter方法注入、静态工厂注入、实例工厂注入
 
 - Spring自动装配的不同模式：no（默认）、byName、byType、构造函数、autodetect
+- @Autowired 由Spring提供，只按照byType注入; @Resource 由J2EE(JDK的，不与Spring耦合)提供，默认按照byName自动注入，名称可以通过@Resource的name属性指定，
+  如果没有指定name属性，当注解标注在字段上，即默认取字段的名称作为bean名称寻找依赖对象，当注解标注在属性的setter方法上，即默认取属性名作为bean名称寻找依赖对象，
+  除了name属性外，还有type属性，可配置其中一个或都配置，按照配置的策略查找注入
 
 - AOP(Aspect-Oriented Programming:面向切面编程)能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。
 
@@ -71,7 +74,55 @@
 
   AOP的那些个概念，可以再回顾一下：切面、连接点、切入点、引入、目标对象、AOP代理、织入、通知
 
-  在Spring Boot1.x（Spring 4.x）版本，AOP中后置通知在@AfterReturning/@AfterThrowing之前执行，在Spring Boot 2.x（Spring 5.x）开始，在这俩之后执行@After
+  ![aop](img/aop-pkg.png)
+  SpringAOP核心概念:上述中已经出现的关键词有Advice(顶级的通知类/拦截器)、MethodInvocation(方法连接点)、MethodInterceptor(方法拦截器)
+
+  SpringAOP在此基础上又增加了几个类，丰富了AOP定义及使用概念，包括
+    - Advisor：包含通知(拦截器)，Spring内部使用的AOP顶级接口，还需要包含一个aop适用判断的过滤器，考虑到通用性，过滤规则由其子接口定义，例如IntroductionAdvisor和PointcutAdvisor，过滤器用于判断bean是否需要被代理。
+      Advisor是一个接口，代表被拦截的方法需要增强的逻辑，通常由另两个组件组成---Advice接口和Pointcut接口，Advice表示实际增强的逻辑入口，Pointcut表示哪些类或方法需要被拦截。
+    - Pointcut: 切点，属于过滤器的一种实现，匹配过滤哪些类哪些方法需要被切面处理，包含一个ClassFilter和一个MethodMatcher，使用PointcutAdvisor定义时需要
+    - ClassFilter：限制切入点或引入点与给定目标类集的匹配的筛选器，属于过滤器的一种实现。过滤筛选合适的类，有些类不需要被处理
+    - MethodMatcher：方法匹配器，定义方法匹配规则，属于过滤器的一种实现，哪些方法需要使用AOP
+
+SpringAOP实现的大致思路：
+
+1.配置获取Advisor ：拦截器+AOP匹配过滤器，生成Advisor
+
+2.生成代理：根据Advisor生成代理对象，会生成JdkDynamicAopProxy或CglibAopProxy
+
+3.执行代理：代理类执行代理时，从Advisor取出拦截器，生成MethodInvocation(连接点)并执行代理过程
+
+```
+    1)连接点(Joinpoint)
+    程序执行的某个特定位置：如类开始初始化前、类初始化后、类某个方法调用前、调用后、方法抛出异常后。一个类或一段程序代码拥有一些具有边界性质的特定点，这些点中的特定点就称为“连接点”。
+    Spring仅支持方法的连接点，即仅能在方法调用前、方法调用后、方法抛出异常时以及方法调用前后这些程序执行点织入增强。连接点由两个信息确定：第一是用方法表示的程序执行点；第二是用相对点表示的方位。
+    2)切点(Pointcut)
+    每个程序类都拥有多个连接点，如一个拥有两个方法的类，这两个方法都是连接点，即连接点是程序类中客观存在的事物。AOP通过“切点”定位特定的连接点。连接点相当于数据库中的记录，而切点相当于查询条件。
+    切点和连接点不是一对一的关系，一个切点可以匹配多个连接点。在Spring中，切点通过org.springframework.aop.Pointcut接口进行描述，它使用类和方法作为连接点的查询条件，
+    Spring AOP的规则解析引擎负责切点所设定的查询条件，找到对应的连接点。其实确切地说，不能称之为查询连接点，因为连接点是方法执行前、执行后等包括方位信息的具体程序执行点，而切点只定位到某个方法上，所以如果希望定位到具体连接点上，还需要提供方位信息。
+    3)增强(Advice)
+    增强是织入到目标类连接点上的一段程序代码，在Spring中，增强除用于描述一段程序代码外，还拥有另一个和连接点相关的信息，这便是执行点的方位。结合执行点方位信息和切点信息，我们就可以找到特定的连接点。
+    The concept of “advisors” comes from the AOP support defined in Spring and does not have a direct equivalent in AspectJ. An advisor is like a small self-contained aspect that has a single piece of advice. 
+    The advice itself is represented by a bean and must implement one of the advice interfaces described in Advice Types in Spring. Advisors can take advantage of AspectJ pointcut expressions.
+    However you create AOP proxies, you can manipulate them BY using the org.springframework.aop.framework.Advised interface. Any AOP proxy can be cast to this interface, no matter which other interfaces it implements.
+    4)目标对象(Target)
+    增强逻辑的织入目标类。如果没有AOP，目标业务类需要自己实现所有逻辑，而在AOP的帮助下，目标业务类只实现那些非横切逻辑的程序逻辑，而性能监视和事务管理等这些横切逻辑则可以使用AOP动态织入到特定的连接点上。
+    5)引介(Introduction)
+    引介是一种特殊的增强，它为类添加一些属性和方法。这样，即使一个业务类原本没有实现某个接口，通过AOP的引介功能，我们可以动态地为该业务类添加接口的实现逻辑，让业务类成为这个接口的实现类。 
+    可使用@DeclareParents   
+    6)织入(Weaving)
+    织入是将增强添加对目标类具体连接点上的过程。AOP像一台织布机，将目标类、增强或引介通过AOP这台织布机天衣无缝地编织到一起。根据不同的实现技术，AOP有三种织入的方式：
+    a、编译期织入，这要求使用特殊的Java编译器。
+    b、类装载期织入，这要求使用特殊的类装载器。
+    c、动态代理织入，在运行期为目标类添加增强生成子类的方式。
+    Spring采用动态代理织入，而AspectJ采用编译期织入和类装载期织入。
+    7)代理(Proxy)
+    一个类被AOP织入增强后，就产出了一个结果类，它是融合了原类和增强逻辑的代理类。根据不同的代理方式，代理类既可能是和原类具有相同接口的类，也可能就是原类的子类，所以我们可以采用调用原类相同的方式调用代理类。
+    8)切面(Aspect)
+    切面由切点和增强(引介)组成，它既包括了横切逻辑的定义，也包括了连接点的定义，Spring AOP就是负责实施切面的框架，它将切面所定义的横切逻辑织入到切面所指定的连接点中。
+```
+
+在Spring Boot1.x（Spring 4.x）版本，AOP中后置通知在@AfterReturning/@AfterThrowing之前执行，在Spring Boot 2.x（Spring 5.x）开始，在这俩之后执行@After
 
 - ASM
 
@@ -292,3 +343,17 @@
         - [RFC 6749](https://tools.ietf.org/html/rfc6749)
         -
     - OpenID Connect(OIDC): It's a standard for authentication, It introduces a new token type called `id_token`, For id_tokens OIDC uses JSON web tokens (JWT)
+
+- [Are annotations better than XML for configuring Spring?](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-annotation-config)
+
+  The introduction of annotation-based configuration raised the question of whether this approach is “better” than XML. The short answer is “it depends.” The
+  long answer is that each approach has its pros and cons, and, usually, it is up to the developer to decide which strategy suits them better. Due to the way
+  they are defined, annotations provide a lot of context in their declaration, leading to shorter and more concise configuration. However, XML excels at wiring
+  up components without touching their source code or recompiling them. Some developers prefer having the wiring close to the source while others argue that
+  annotated classes are no longer POJOs and, furthermore, that the configuration becomes decentralized and harder to control.
+
+  No matter the choice, Spring can accommodate both styles and even mix them together. It is worth pointing out that through its JavaConfig option, Spring lets
+  annotations be used in a non-invasive way, without touching the target components source code and that, in terms of tooling, all configuration styles are
+  supported by the Spring Tools for Eclipse.
+
+  Annotation injection is performed before XML injection. Thus, the XML configuration overrides the annotations for properties wired through both approaches.
