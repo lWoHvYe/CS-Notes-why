@@ -2,9 +2,11 @@
 
 - 《计算机科学概论》
 - ✨《计算机程序的构造和解释》 SICP
+    - [Programming by poking: why MIT stopped teaching SICP](http://lambda-the-ultimate.org/node/5335#:~:text=So%20in%201997%2C%20they%20walked,what%20engineering%20is%20like%20today.)
 - 《计算机组成原理》
 - ✨《深入理解计算机系统》 CSAPP
 - 《操作系统导论》、《操作系统概念》
+- 《操作系统设计与实现》
 - 《计算机网络：自顶向下方法》
 - 《模拟电子技术》
 - 《数字电子技术》
