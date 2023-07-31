@@ -74,4 +74,5 @@
 - Kotlin, Groovy
 
 #### BookShelf
-- [黑皮书191本](链接: https://pan.baidu.com/s/1RaCwlMT3OLqHQP5H07XrNg?pwd=a4yx)
+- [黑皮书191本](https://pan.baidu.com/s/1RaCwlMT3OLqHQP5H07XrNg?pwd=a4yx)
+- [电子书.epub](https://pan.quark.cn/s/588c6781e2f1)
