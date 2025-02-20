@@ -48,10 +48,10 @@
     - BeanPostProcessor后置处理
     - 注册必要的Destruction相关回调接口（以在destroy时回调）
     - 使用中
-    - 是否实现DesposableBean接口以决定是否调用destory方法
-    - 是否配置有自定义的destory方法
+    - 是否实现DisposableBean接口以决定是否调用destroy方法
+    - 是否配置有自定义的destroy方法
 
-- 使用@PostConstruct可在Bean初始化完成后插入些逻辑。使用@PreDestory可在Bean销毁前插入些逻辑。
+- 使用@PostConstruct可在Bean初始化完成后插入些逻辑。使用@PreDestroy可在Bean销毁前插入些逻辑。
 
 - Spring依赖注入四种方式：构造器注入、setter方法注入、静态工厂注入、实例工厂注入
 
