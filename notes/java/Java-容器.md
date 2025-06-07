@@ -33,7 +33,7 @@
 
       结构：Segment 数组 + HashEntry 数组 + 链表
 
-    - 1.8开始：使用的 Synchronized 锁加 CAS 的机制
+    - 1.8开始：使用的 Synchronized 锁加 CAS 的机制，支持多线程协助扩容。每次扩容为原来的两倍。
 
       结构：Node 数组 + 链表 / 红黑树
 
