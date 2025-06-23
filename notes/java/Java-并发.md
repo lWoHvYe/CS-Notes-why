@@ -85,7 +85,7 @@
 
 - 可重入锁的实现机制：AQS、每个锁对象拥有一个使用volatile修饰的锁计数器state和一个指向持有该锁的线程的指针，当获取锁时，若锁已被本线程持有，则讲计数器加1，解锁时会减1，当变为0时表示完全释放锁。
 
-- StampedLock是在1.8引入的读写锁，是对原ReentrantReadWriteLock的增强，优化了读写锁的访问（类似RWLock在fair模式下的排队，后到的获取读锁请求将在前面获取写锁请求完成后才能执行，即便已经有线程加上了读锁），同时读写锁之间可以互相转化（ReentrantReadWriteLock只能写锁降级为写锁），但它是不可重入锁，不支持Condition，直接通过CLH来实现，而非AQS框架。有一定的使用技巧，使用不当可能导致死锁。
+- StampedLock是在1.8引入的读写锁，是对原ReentrantReadWriteLock的增强，优化了读写锁的访问（类似RWLock在fair模式下的排队，后到的获取读锁请求将在前面获取写锁请求完成后才能执行，即便已经有线程加上了读锁），同时读写锁之间可以互相转化（ReentrantReadWriteLock只能写锁降级为读锁），但它是不可重入锁，不支持Condition，直接通过CLH来实现，而非AQS框架。有一定的使用技巧，使用不当可能导致死锁。
 
 - LockSupport是用来创建锁和其他同步类的基本线程阻塞原语。
 
@@ -160,7 +160,7 @@
   `Thread`类有一个类型为`ThreadLocal.ThreadLocalMap`的实例变量`threadLocals`，也就是说每个线程有一个自己的`ThreadLocalMap`。
 
   `ThreadLocalMap`有自己的独立实现，可以简单地将它的`key`视作`ThreadLocal`，`value`为代码中放入的值（实际上`key`并不是`ThreadLocal`
-  本身，而是它的一个弱引用，主要是因为，当ThreadLocal不再被使用时，因为ThreadLocalMap中是其弱引用，所以可以被回收掉，这样Entry的key就会变成null，但因为value是强引用，虽然在一些操作时会清除key为null的Entry，还是会出现内存泄漏问题，但起码保证了在使用线程池的情况下，不会出现读取到放回池中前存的属性的问题，但还是要养成习惯，手动remove()
+  本身，而是它的一个弱引用，主要是因为，当ThreadLocal不再被使用时，因为ThreadLocalMap中是其弱引用，所以可以被回收掉，这样Entry的key就会变成null，但因为value是强引用，虽然在一些操作时会清除key为null的Entry，还是会出现内存泄漏问题，但起码保证了在使用线程池的情况下，不会出现读取到放回池中前存的属性的问题（这里不准确，如果放入池中前和后面再从池中取出使用的是同一ThreadLocal，且放入前未清理，则取出后若未使用set覆盖旧值，还是会读出旧值的），但还是要养成习惯，手动remove()
   清除）。
 
   每个线程在往`ThreadLocal`里放值的时候，都会往自己的`ThreadLocalMap`里存，读也是以`ThreadLocal`作为引用，在自己的`map`里找对应的`key`，从而实现了线程隔离。
