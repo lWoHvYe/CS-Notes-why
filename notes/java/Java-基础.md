@@ -26,7 +26,7 @@
 
 - Java中的类是单继承多实现，而接口是支持多继承的。
 
-- Comparable(类实现)接口的compareTo()和Comparator(传给排序方法)接口中的compare()，前者是内比较器，后者是外比较器
+- Comparable(类实现)接口的compareTo()和Comparator(传给排序方法)接口中的compare()，前者是内比较器，后者是外比较器，返回-1,0,1分别表示第一个数小于、等于、大于第二个数。
 
 - Throwable Error Exception（受检异常，非受检异常）
 
